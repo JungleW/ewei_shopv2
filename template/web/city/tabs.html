@@ -1,0 +1,19 @@
+<style type='text/css'>
+	.goods-list a {
+		position: relative; 
+	}
+	.goods-list span  {
+	float:right;margin-right:20px;
+	 
+	}
+</style>
+
+{ifp 'goods'}
+<div class='menu-header'>城市管理</div>
+<ul class='goods-list'>
+    <li {if $_W['action'] == 'city'} class="active" {/if}><a href="{php echo webUrl('city')}">城市管理</a></li>
+</ul>
+{/if}
+
+
+  

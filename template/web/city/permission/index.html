@@ -1,0 +1,80 @@
+{template '_header'}
+<div class="page-heading">
+    <h2>城市权限分配</h2>
+</div>
+<form action="./index.php" method="get" class="form-horizontal form-search" role="form">
+    <input type="hidden" name="c" value="site" />
+    <input type="hidden" name="a" value="entry" />
+    <input type="hidden" name="m" value="ewei_shopv2" />
+    <input type="hidden" name="do" value="web" />
+    <input type="hidden" name="r"  value="goods.brand" />
+    <div class="page-toolbar row m-b-sm m-t-sm">
+        <div class="col-sm-4">
+<!--             <div class="input-group-btn">
+                <button class="btn btn-default btn-sm"  type="button" data-toggle='refresh'><i class='fa fa-refresh'></i></button>
+                {ifp 'goods.brand.edit'}
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch' data-href="{php echo webUrl('goods/brand/status',array('status'=>1))}"><i class='fa fa-circle'></i> 启用</button>
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch'  data-href="{php echo webUrl('goods/brand/status',array('status'=>0))}"><i class='fa fa-circle-o'></i> 禁用</button>
+                {/if}
+                {ifp 'goods.brand.delete'}
+                <button class="btn btn-default btn-sm" type="button" data-toggle='batch-remove' data-confirm="确认要删除?" data-href="{php echo webUrl('sns/level/delete')}"><i class='fa fa-trash'></i> 删除</button>
+                {/if}
+            </div> -->
+        </div>
+        <div class="col-sm-6 pull-right">
+           <!--  <select name="enabled" class='form-control input-sm select-sm'>
+                <option value="" {if $_GPC['enabled'] == ''} selected{/if}>状态</option>
+                <option value="1" {if $_GPC['enabled']== '1'} selected{/if}>启用</option>
+                <option value="0" {if $_GPC['enabled'] == '0'} selected{/if}>禁用</option>
+            </select> -->
+            <div class="input-group">
+                <input type="text" class="input-sm form-control" name='keyword' value="{$_GPC['keyword']}" placeholder="请输入关键词"> <span class="input-group-btn">
+                <button class="btn btn-sm btn-primary" type="submit"> 搜索</button> </span>
+            </div>
+        </div>
+    </div>
+</form>
+<form action="" method="post" >
+    {if count($member)>0}
+    <table class="table table-hover table-responsive">
+        <thead>
+        <tr>
+            <th>用户名称</th>
+            <th style="width:80px;">分配城市</th>
+            <th style="width:200px;text-align: center;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {loop $member $row}
+        <tr>
+            <td>{$row['username']}</td>
+            <td>
+                城市名
+            </td>
+            <td>
+                {ifp 'goods.brand.view|goods.brand.edit'}
+                <a href="{php echo webUrl('city/permission/edit', array('id' => $row['id']))}" class="btn btn-default btn-sm">
+                    <i class='fa fa-edit'></i> {ifp 'city.permission.edit'}修改{else}查看{/if}
+                </a>
+                 <a class='btn btn-primary'  data-toggle='ajaxModal' href="{php echo webUrl('finance/recharge', array('type'=>'credit1','id'=>$member['id']))}">充值</a>
+                {/if}
+            </td>
+        </tr>
+        {/loop}
+
+        </tbody>
+    </table>
+    <div style="text-align:right;width:100%;">
+        {$pager}
+    </div>
+    {else}
+    <div class='panel panel-default'>
+        <div class='panel-body' style='text-align: center;padding:30px;'>
+            暂时没有任何品牌!
+        </div>
+    </div>
+    {/if}
+</form>
+
+
+{template '_footer'}

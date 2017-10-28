@@ -1,0 +1,87 @@
+{template '_header'}
+<link rel="stylesheet" href="../addons/ewei_shopv2/plugin/task/static/style/taskplugin.css?v={php echo time();}">
+<link href="../addons/ewei_shopv2/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+<div class="fui-page fui-page-current">
+    <div class="fui-header">
+        <div class="fui-header-left">
+            <a class="back"></a>
+        </div>
+        <div class="title">任务详情</div>
+        <div class="fui-header-right"></div>
+    </div>
+
+    <div class="fui-content">
+
+        <div class="d-head"><div class="d-sign"></div>
+            <div class="d-head-task">{$detail['title']}</div>
+            <div class="d-head-time">{php echo date('Y-m-d',$detail['starttime']);}至{php echo date('Y-m-d',$detail['endtime']);}</div>
+
+        </div>
+        <div class="blank"></div>
+        {if !$poster}
+        <div class="d-desc">
+            <div class="d-text">{php echo htmlspecialchars_decode($detail['explain']);}</div>
+        </div>
+        {loop $require_data $k $v}
+            {if !empty($v['num'])}
+                <div class="d-item">
+                    <div class="dd-logo">1</div>
+                    <div class="d-content">
+                        <div class="d-title">目标：{php echo $this->model->returnName($k);}{$v['verb']}{$v['num']}{$v['unit']}</div>
+                        <div class="d-reward"></div>
+                    </div>
+                </div>
+            {/if}
+        {/loop}
+        {else}
+            <div class="d-item">
+                <div class="dd-logo">1</div>
+                <div class="d-content">
+                    <div class="d-title">目标：通过海报邀请{$detail['needcount']}人关注</div>
+                    <div class="d-reward">奖励:1件特惠商品</div>
+                </div>
+            </div>
+        {/if}
+        <div class="task-footer"></div>
+    </div>
+</div><div class="d-btn{if $poster}-p{/if}">立即领取</div>
+<script>
+    $(function () {
+        $(".d-btn").click(function () {
+            var id = '{$id}';
+            $.ajax({
+                url:"{php echo mobileUrl('task/newtask');}",
+                type:'post',
+                data:{id:id},
+                success:function (data) {
+                    var json = JSON.parse(data);
+                    if(json.status){
+                        FoxUI.alert('领取成功，请到我的任务中查看','领取成功');
+                    }else{
+                        FoxUI.alert(json.result.message,'领取失败');
+                    }
+                }
+            });
+            return;
+        });
+        $(".d-btn-p").click(function () {
+            var id = '{$id}';
+            $.ajax({
+                url:"{php echo mobileUrl('task/gettask',array('content'=>$detail['keyword']));}",
+                type:'post',
+                data:{id:id},
+                success:function (data) {
+                    var json = JSON.parse(data);
+                    if(json.status){
+                        FoxUI.alert('领取成功，请到我的任务中查看','领取成功');
+                    }else{
+                        FoxUI.alert(json.result.message,'领取失败');
+                    }
+                }
+            });
+            return;
+        });
+    })
+</script>
+{template '_footer'}

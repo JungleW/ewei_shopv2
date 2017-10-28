@@ -1,0 +1,84 @@
+{template '_header'}
+<div class="page-heading">
+	<span class='pull-right'>
+		{ifp 'goods.brand.add'}
+            <a class="btn btn-primary btn-sm" href="{php echo webUrl('goods/brand/add')}">添加新品牌</a>
+		{/if}
+		<a class="btn btn-default  btn-sm" href="{php echo webUrl('goods/brand')}">返回列表</a>
+	</span>
+	<h2>{if !empty($item['id'])}编辑{else}添加{/if}品牌 <small>{if !empty($item['id'])}修改【{$item['name']}】{/if}</small></h2>
+</div>
+    <form {ife 'goods' $item}action="" method="post"{/if} class="form-horizontal form-validate" enctype="multipart/form-data" >
+        <div class="form-group">
+            <label class="col-sm-2 control-label">排序</label>
+            <div class="col-sm-9 col-xs-12">
+                {ife 'goods' $item}
+                <input type="text" name="displayorder" class="form-control" value="{$item['displayorder']}" />
+                {else}
+                <div class='form-control-static'>{$item['displayorder']}</div>
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label must">品牌名称</label>
+            <div class="col-sm-9 col-xs-12">
+                {ife 'goods' $item}
+                <input type="text" name="brand" class="form-control" value="{$item['brand']}" data-rule-required="true" />
+                {else}
+                <div class='form-control-static'>{$item['brand']}</div>
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">品牌描述</label>
+            <div class="col-sm-9 col-xs-12">
+                 {ife 'goods' $item}
+                <textarea name="description" class="form-control" >{$item['description']}</textarea>
+                {else}
+                <div class='form-control-static'>{$item['description']}</div>
+                {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">是否启用</label>
+            <div class="col-sm-9 col-xs-12" id="param-items">
+                 {ife 'groups.goods' $item}
+                <label class="radio-inline">
+                    <input type="radio" name='status' value="1" {if $item['status']==1}checked{/if} /> 是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name='status' value="0" {if empty($item['status'])}checked{/if} /> 否
+                </label>
+                    {else}
+                 <div class='form-control-static'>{if empty($item['status'])}是{else}否{/if}</div>
+                 {/if}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-9 col-xs-12">
+                 {ife 'goods.brand' $item}
+                    <input type="submit" value="提交" class="btn btn-primary"  />
+                {/if}
+               <input type="button" name="back" onclick='history.back()' {ifp 'goods.brand.add|goods.brand.edit'}style='margin-left:10px;'{/if} value="返回列表" class="btn btn-default" />
+            </div>
+        </div>
+    </form>
+<script>
+
+    {ifp 'goods.brand.edit'}
+    require(['jquery.ui'],function(){
+        $('#tbody-items').sortable();
+    })
+    {/if}
+    $(function(){
+        $(".btn-del").on("click",function(){
+            var $btntr = $(this).parents('tr');
+            console.log($btntr);
+            tip.confirm('确认删除此品牌?',function(){
+                $btntr.remove();
+            });
+        });
+    });
+</script>
+{template '_footer'}

@@ -1,0 +1,40 @@
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button data-dismiss="modal" class="close" type="button">×</button>
+            <h4 class="modal-title">城市所属管理员</h4>
+        </div>
+        <div class="modal-body">
+        <button class="btn btn-primary btn-lm active" type="submit" value="">不分配</button>
+        {loop $member $row}
+        <button class="btn btn-primary btn-lm active" type="submit" value="{$row['uid']}">{$row['username']}</button>
+        {/loop}
+        </div> 
+        <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+        </div>
+    </div>
+</div>
+<script language='javascript'>
+    $(function(){
+        $("[type=submit]").click(function(){
+            var id =$(this).val();
+            var cityId = '{$cityid}';
+            var url="{php echo webUrl('city/modal/usercity/postcity')}";
+            $.post(url,{'id':id,'cityId':cityId},function(data){
+                if(data==='success'){
+                    window.location.href="{php echo webUrl('city')}";
+                }else if(data==='fail'){
+                    alert('操作失败！');
+                    window.location.href="{php echo webUrl('city')}";
+                }else if(data===''){
+                    alert('该城市未分配，请重新操作！');
+                    window.location.href="{php echo webUrl('city')}";
+                }
+            })
+            
+        });
+
+    })
+</script>
